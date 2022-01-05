@@ -2,7 +2,8 @@
 This is the draft version of the repository for a Wordle AI Competition. AIs will try to become the optimal https://www.powerlanguage.co.uk/wordle/ wordle player.
 
 # Rules
-- In each round of wordle you try to guess a 5 letter long word
+- In each round of wordle you try to guess a random 5 letter word
+- Words are alway lowercase. Words only contain letters a-z and no letter can be present more than once in a word.
 - You have 6 guesses
 - After each guess you will receive information about which letters of your guess were correct
 - The goal is to collect as few points as possible. A round will gives points equal the number of guesses or 10 points if the word was not found within the 6 guesses.
