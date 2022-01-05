@@ -9,9 +9,15 @@ This is the draft version of the repository for a Wordle AI Competition. AIs wil
 - The goal is to collect as few points as possible. A round will gives points equal the number of guesses or 10 points if the word was not found within the 6 guesses.
 - The winner of a competition is the competitor with the least amount of points over all the rounds.
 
+# Hard Mode Rules
+- Standard rules apply
+- Guesses must follow already information. Revealed letters have to be part of the guess, if possible at the right position. 
+
 # Run the competition
 Run competition.py. By default 2 divisions are run with 1000 random words each:
+
 Normal: All AIs in ai_implementations will compete.
+
 Hard Mode: All AIs in ai_implementations_hard_mode will compete with the Wordle Hard Mode rules.
 
 You can pass true for the print_details argument in the Competition.fight calls in the main method if you want to see guesses and scoring.
