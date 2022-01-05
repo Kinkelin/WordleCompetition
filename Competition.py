@@ -12,8 +12,8 @@ class Competition:
 
     def __init__(self, competitor_directory, hard_mode=False):
         self.competitor_directory = competitor_directory
-        self.wordlist = WordList("word_list_long.txt")
-        self.words = self.wordlist.get_list()
+        self.wordlist = WordList("data/word_list_github_dwyl_english_words.txt")
+        self.words = self.wordlist.get_list_copy()
         self.competitors = self.load_competitors()
         self.hard_mode = hard_mode
 
@@ -30,7 +30,7 @@ class Competition:
                 module = importlib.import_module(self.competitor_directory + "." + file[:-3])
                 for name, obj in inspect.getmembers(module):
                     if inspect.isclass(obj) and issubclass(obj, WordleAI) and not inspect.isabstract(obj):
-                        competitors.append(obj(self.wordlist.get_list()))
+                        competitors.append(obj(self.wordlist.get_list_copy()))
 
         return competitors
 
@@ -49,9 +49,10 @@ class Competition:
         letters = self.create_letter_dictionary()
         guesses = []
         success = False
+        guess_history = []
 
         for i in range(6):  # Up to 6 guesses
-            guess = competitor.guess(revealed, letters, i, self.hard_mode)
+            guess = competitor.guess(revealed, letters, guess_history, i, self.hard_mode)
 
             if not self.guess_is_legal(guess, revealed, letters):
                 print("Competitor ", competitor.__class__.__name__, " is a dirty cheater!")
@@ -59,15 +60,19 @@ class Competition:
                 print("Competition aborted.")
                 quit()
 
+            guess_result = []
             for c in range(5):
                 if guess[c] not in word:
                     letters[guess[c]] = LetterInformation.NOT_PRESENT
+                    guess_result.append(LetterInformation.NOT_PRESENT)
                 elif word[c] == guess[c]:
                     revealed = self.replace_char(revealed, c, guess[c])
-                    letters[guess[c]] = LetterInformation.POSITION_KNOWN
-                elif letters[guess[c]] != LetterInformation.POSITION_KNOWN:
+                    letters[guess[c]] = LetterInformation.CORRECT
+                    guess_result.append(LetterInformation.CORRECT)
+                elif letters[guess[c]] != LetterInformation.CORRECT:
                     letters[guess[c]] = LetterInformation.PRESENT
-
+                    guess_result.append(LetterInformation.PRESENT)
+            guess_history.append((guess, guess_result))
             guesses.append(guess)
 
             if guess == word:
