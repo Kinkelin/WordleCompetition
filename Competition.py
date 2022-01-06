@@ -4,15 +4,17 @@ import string
 import random
 import importlib
 
+import numpy as np
+
 from WordList import WordList
 from WordleAI import LetterInformation, is_hard_mode, WordleAI
 
 
 class Competition:
 
-    def __init__(self, competitor_directory, hard_mode=False):
+    def __init__(self, competitor_directory, wordlist_filename="data/word_list_mieliestronk_com_corncob_lowercase.txt",hard_mode=False):
         self.competitor_directory = competitor_directory
-        self.wordlist = WordList("data/word_list_github_dwyl_english_words.txt")
+        self.wordlist = WordList(wordlist_filename)
         self.words = self.wordlist.get_list_copy()
         self.competitors = self.load_competitors()
         self.hard_mode = hard_mode
@@ -72,6 +74,10 @@ class Competition:
                 elif letters[guess[c]] != LetterInformation.CORRECT:
                     letters[guess[c]] = LetterInformation.PRESENT
                     guess_result.append(LetterInformation.PRESENT)
+                else:
+                    guess_result.append(LetterInformation.PRESENT)
+            if len(guess_result) != 5:
+                print(guess_result)
             guess_history.append((guess, guess_result))
             guesses.append(guess)
 
@@ -81,7 +87,7 @@ class Competition:
 
         return success, guesses
 
-    def fight(self, rounds, print_details=False):
+    def fight(self, rounds, print_details=False, fight_wordlist_filename='data/word_list_mieliestronk_com_corncob_lowercase.txt', shuffle=True):
         result = {}
         guesses = {}
         points = {}
@@ -92,8 +98,12 @@ class Competition:
             guesses[competitor] = []
             points[competitor] = []
 
+        fight_words = WordList(fight_wordlist_filename).get_list_copy()
+
         for r in range(rounds):
-            word = random.choice(self.words)
+            if (r % 100 == 0):
+                print("Entering round ", r)
+            word = random.choice(fight_words) if shuffle else fight_words[r]
             round_words.append(word)
             for competitor in self.competitors:
                 success, round_guesses = self.play(competitor, word)
@@ -111,13 +121,20 @@ class Competition:
         result = dict(sorted(result.items(), key=lambda item: item[1]))
         placement = 1
         for competitor in result:
-            print(competitor.__class__.__name__, " placed ", placement, " with a score of ", result[competitor])
+            print(competitor.__class__.__name__, " placed ", placement, " with a score of ", result[competitor], " and points per round: ", result[competitor]/rounds)
             placement += 1
 
 
 def main():
+    np.set_printoptions(threshold=np.inf)
+    np.set_printoptions(suppress=True)
+
     competiton = Competition("ai_implementations", hard_mode=False)
-    competiton.fight(1000, False)
+    competiton.fight(rounds=1000)
+
+    #Historic wordle competition
+    #competiton.fight(rounds=8, print_details=True,fight_wordlist_filename='data/wordle_historic_words.txt', shuffle=False)
+
     print("")
     competiton = Competition("ai_implementations_hard_mode", hard_mode=True)
     competiton.fight(1000, False)
