@@ -43,7 +43,7 @@ class Competition:
         return new_string
 
     def guess_is_legal(self, guess, revealed, letters):
-        return len(guess) == 5 and guess.lower() == guess and (
+        return len(guess) == 5 and guess.lower() == guess and guess in self.words and (
                     not self.hard_mode or is_hard_mode(guess, revealed, letters))
 
     def play(self, competitor, word):
