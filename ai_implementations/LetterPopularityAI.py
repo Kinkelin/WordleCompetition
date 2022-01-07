@@ -9,7 +9,7 @@ class LetterPopularityAI(WordleAI):
     """
 
     def guess(self, revealed, letters, guess_history, attempts, hard_mode):
-        options = remaining_options(self.words, revealed, letters, guess_history)  # take known information into account
+        options = remaining_options(self.words, guess_history)  # take known information into account
         letter_popularity = calculate_letter_popularity(options)  # calculate letter popularity in remaining options
         best_option = options[0]
         highest_popularity = 0
@@ -36,29 +36,12 @@ def calculate_word_popularity(word, letter_popularity):
     return word_popularity
 
 
-def remaining_options(words, revealed, letters, guess_history):
+def remaining_options(words, guess_history):
     """
     Filters a word list with all the known information.
     Returns the list of remaining options.
     """
-    return [word for word in words if
-            fits_revealed(word, revealed) and fits_letters(word, letters) and fits_guess_history(word, guess_history)]
-
-
-def fits_revealed(word, revealed):
-    for i in range(5):
-        if revealed[i] != '_' and revealed[i] != word[i]:
-            return False
-    return True
-
-
-def fits_letters(word, letters):
-    for letter in letters:
-        if (letters[letter] == LetterInformation.PRESENT) and letter not in word:
-            return False
-        if letters[letter] == LetterInformation.NOT_PRESENT and letter in word:
-            return False
-    return True
+    return [word for word in words if fits_guess_history(word, guess_history)]
 
 
 def fits_guess_history(word, guess_history):
@@ -66,6 +49,12 @@ def fits_guess_history(word, guess_history):
         if entry[0] == word:
             return False
         for i in range(5):
-            if entry[0][i] == word[i] and entry[1][i] == LetterInformation.PRESENT:
+            letter = entry[0][i]
+            info = entry[1][i]
+            if info == LetterInformation.CORRECT and word[i] != letter:
+                return False
+            if info == LetterInformation.PRESENT and (letter == word[i] or letter not in word):
+                return False
+            if info == LetterInformation.NOT_PRESENT and letter in word:
                 return False
     return True
