@@ -136,7 +136,7 @@ def main():
     competition.fight(rounds=1000,print_details=False)
 
     # Historic wordle competition
-    # competiton.fight(rounds=8, print_details=True,fight_wordlist_filename='data/wordle_historic_words.txt', shuffle=False)
+    #competition.fight(rounds=200, print_details=True,fight_wordlist_filename='data/officia/wordle_historic_words.txt', shuffle=False)
 
     print("")
     competition = Competition("ai_implementations_hard_mode", hard_mode=True)
