@@ -6,13 +6,13 @@ import importlib
 
 import numpy as np
 
-from WordList import WordList
-from WordleAI import LetterInformation, is_hard_mode, WordleAI
+from WordList import *
+from WordleAI import *
 
 
 class Competition:
 
-    def __init__(self, competitor_directory, wordlist_filename="data/word_list_mieliestronk_com_corncob_lowercase.txt",hard_mode=False):
+    def __init__(self, competitor_directory, wordlist_filename="data/official/combined_wordlist.txt", hard_mode=False):
         self.competitor_directory = competitor_directory
         self.wordlist = WordList(wordlist_filename)
         self.words = self.wordlist.get_list_copy()
@@ -39,12 +39,12 @@ class Competition:
     def replace_char(self, original_string, char_index, new_char):
         new_string = ""
         for i in range(len(original_string)):
-            new_string +=  new_char if i == char_index else original_string[i]
+            new_string += new_char if i == char_index else original_string[i]
         return new_string
 
     def guess_is_legal(self, guess, revealed, letters):
         return len(guess) == 5 and guess.lower() == guess and guess in self.words and (
-                    not self.hard_mode or is_hard_mode(guess, revealed, letters))
+                not self.hard_mode or is_hard_mode(guess, revealed, letters))
 
     def play(self, competitor, word):
         revealed = "_____"
@@ -58,7 +58,7 @@ class Competition:
 
             if not self.guess_is_legal(guess, revealed, letters):
                 print("Competitor ", competitor.__class__.__name__, " is a dirty cheater!")
-                print( "hard_mode: ", self.hard_mode, "guess: ", guess, "revealed: ", revealed, "letters: ", letters)
+                print("hard_mode: ", self.hard_mode, "guess: ", guess, "revealed: ", revealed, "letters: ", letters)
                 print("Competition aborted.")
                 quit()
 
@@ -87,7 +87,8 @@ class Competition:
 
         return success, guesses
 
-    def fight(self, rounds, print_details=False, fight_wordlist_filename='data/word_list_mieliestronk_com_corncob_lowercase.txt', shuffle=True):
+    def fight(self, rounds, print_details=False, solution_wordlist_filename='data/official/combined_wordlist.txt',
+              shuffle=True):
         result = {}
         guesses = {}
         points = {}
@@ -98,7 +99,7 @@ class Competition:
             guesses[competitor] = []
             points[competitor] = []
 
-        fight_words = WordList(fight_wordlist_filename).get_list_copy()
+        fight_words = WordList(solution_wordlist_filename).get_list_copy()
 
         for r in range(rounds):
             if (r % 100 == 0):
@@ -117,11 +118,13 @@ class Competition:
             print("Guesses: ", guesses)
             print("Points per round: ", points)
 
-        print("Competition finished with ", rounds, " rounds, ", len(self.competitors), " competitors and hard_mode = ", self.hard_mode)
+        print("Competition finished with ", rounds, " rounds, ", len(self.competitors), " competitors and hard_mode = ",
+              self.hard_mode)
         result = dict(sorted(result.items(), key=lambda item: item[1]))
         placement = 1
         for competitor in result:
-            print(competitor.__class__.__name__, " placed ", placement, " with a score of ", result[competitor], " and points per round: ", result[competitor]/rounds)
+            print(competitor.__class__.__name__, " placed ", placement, " with a score of ", result[competitor],
+                  " and points per round: ", result[competitor] / rounds)
             placement += 1
 
 
@@ -129,15 +132,16 @@ def main():
     np.set_printoptions(threshold=np.inf)
     np.set_printoptions(suppress=True)
 
-    competiton = Competition("ai_implementations", hard_mode=False)
-    competiton.fight(rounds=1000)
+    competition = Competition("ai_implementations", hard_mode=False)
+    competition.fight(rounds=1000,print_details=False)
 
-    #Historic wordle competition
-    #competiton.fight(rounds=8, print_details=True,fight_wordlist_filename='data/wordle_historic_words.txt', shuffle=False)
+    # Historic wordle competition
+    # competiton.fight(rounds=8, print_details=True,fight_wordlist_filename='data/wordle_historic_words.txt', shuffle=False)
 
     print("")
-    competiton = Competition("ai_implementations_hard_mode", hard_mode=True)
-    competiton.fight(1000, False)
+    competition = Competition("ai_implementations_hard_mode", hard_mode=True)
+    competition.fight(rounds=1000, print_details=False)
+
 
 if __name__ == "__main__":
     main()

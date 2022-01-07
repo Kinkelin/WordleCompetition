@@ -44,7 +44,7 @@ class WordleAI(ABC):
     @abstractmethod
     def guess(self, revealed, letters, guess_history, attempts, hard_mode):
         """
-        Returns a 6 letter word trying to guess the wordle.
+        Returns a 5 letter word trying to guess the wordle.
 
         Parameters
         ----------
