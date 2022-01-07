@@ -89,6 +89,7 @@ class Competition:
 
     def fight(self, rounds, print_details=False, solution_wordlist_filename='data/official/combined_wordlist.txt',
               shuffle=True):
+        print("Start tournament")
         result = {}
         guesses = {}
         points = {}
@@ -102,8 +103,7 @@ class Competition:
         fight_words = WordList(solution_wordlist_filename).get_list_copy()
 
         for r in range(rounds):
-            if (r % 100 == 0):
-                print("Entering round ", r)
+            print("\rRound ", r+1,"/",rounds, end = '')
             word = random.choice(fight_words) if shuffle else fight_words[r]
             round_words.append(word)
             for competitor in self.competitors:
@@ -112,11 +112,12 @@ class Competition:
                 result[competitor] += round_points
                 guesses[competitor].append(round_guesses)
                 points[competitor].append(round_points)
-
+        print("")
         if print_details:
             print("Words: ", round_words)
             print("Guesses: ", guesses)
             print("Points per round: ", points)
+            print("")
 
         print("Competition finished with ", rounds, " rounds, ", len(self.competitors), " competitors and hard_mode = ",
               self.hard_mode)
@@ -133,14 +134,14 @@ def main():
     np.set_printoptions(suppress=True)
 
     competition = Competition("ai_implementations", hard_mode=False)
-    competition.fight(rounds=1000,print_details=False)
+    competition.fight(rounds=50, print_details=True)
 
     # Historic wordle competition
     #competition.fight(rounds=200, print_details=True,fight_wordlist_filename='data/officia/wordle_historic_words.txt', shuffle=False)
 
     print("")
     competition = Competition("ai_implementations_hard_mode", hard_mode=True)
-    competition.fight(rounds=1000, print_details=False)
+    competition.fight(rounds=50, print_details=False)
 
 
 if __name__ == "__main__":

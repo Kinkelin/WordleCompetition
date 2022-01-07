@@ -2,16 +2,22 @@
 In this repository you can find everything you need to hold [Wordle](https://www.powerlanguage.co.uk/wordle/) AI competitions. Implement and test your own AIs to find the optimal wordle strategy!
 
 # How to implement your own AI
-Inherit from the abstract [WordleAI](WordleAI.py) class and implement its `guess()` method. See the [Monkey AI](ai_implementations/MonkeyAI.py) classes for an example implementation. You can find detailed documentation about this interface in the WordleAI class itself.
+Inherit from the abstract [WordleAI](WordleAI.py) class and implement its `guess()` method. 
+You can find detailed documentation about this interface in the WordleAI class itself.
+
+See the [Monkey AI](ai_implementations/MonkeyAI.py) and [LetterPopularityAI](ai_implementations/LetterPopularityAI.py) classes for example implementations. 
+Feel free to reuse any code in your own implementations, for example the `remaining_options()` method.
+
+
 
 # Run the test competition
-- Run [Competition.py](Competition.py). By default, 2 divisions are run with 1000 random words each:
+- Run [Competition.py](Competition.py). By default, 2 divisions are run with 50 random words each:
 - Normal: All AIs in ai_implementations will compete.
 - Hard Mode: All AIs in ai_implementations_hard_mode will compete.
 - You can pass `True` for the `print_details` argument in the `Competition.fight()` calls in the main method if you want to see guesses and scoring.
 
 # Wordle rules
-- In each round of wordle you try to guess a random 5 letter word
+- In each round of wordle you try to guess a random 5-letter word
 - Words only contain letters a-z and are lower case.
 - You have 6 guesses
 - After each guess you will receive information about which letters of your guess were correct
