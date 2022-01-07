@@ -57,7 +57,7 @@ def fits_letters(word, letters):
         if (letters[letter] == LetterInformation.PRESENT) and letter not in word:
             return False
         if letters[letter] == LetterInformation.NOT_PRESENT and letter in word:
-            False
+            return False
     return True
 
 
