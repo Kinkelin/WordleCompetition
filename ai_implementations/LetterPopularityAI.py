@@ -46,8 +46,6 @@ def remaining_options(words, guess_history):
 
 def fits_guess_history(word, guess_history):
     for entry in guess_history:
-        if entry[0] == word:
-            return False
         for i in range(5):
             letter = entry[0][i]
             info = entry[1][i]
