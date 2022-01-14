@@ -50,18 +50,23 @@ ask for help or boast about your AI's playing strength!
 Executing this file allows playing the game in the browser with AI support. Simply relay the ingame information
 to the AI via console input.
 
+# Official wordle word list
+The word list of the official wordle game consists of 12972 words: [combined_wordlist.txt](data/official/combined_wordlist.txt)<br>
+Around 2500 of them are used as the daily wordles: [shuffled_real_wordles.txt](data/official/shuffled_real_wordles.txt).
+
 # WordleJudge.py
-Helper class to take into account how common words are in the English language. 
-Use an instance of this class and call `is_wordle_probability(word)` to factor word usage frequency into your decision making.
+Analysis has shown the daily wordles are significantly more frequently used words than the average allowed guess word. 
+This is something human players automatically adjust for - they are more likely to guess 'water' than 'pekoe' (a specific tea). 
+
+The WordleJudge class takes into account how common words are in the English language. 
+Use an instance of this class and call `is_wordle_probability(word)` to factor word usage frequency into your decision-making.
+
 
 # Hard Mode rules
 This is an optional setting in the official game.
 - Standard rules apply
 - Guesses must follow already known information. Revealed letters have to be part of the guess, if possible at the right position.
 
-# Official wordle word list
-The word list of the official wordle game consists of 12972 words: [combined_wordlist.txt](data/official/combined_wordlist.txt)<br>
-Around 2500 of them are used as the daily wordles: [shuffled_real_wordles.txt](data/official/shuffled_real_wordles.txt).
 
 # Unofficial word lists
 In the data folder a few unofficial word lists can be found:
