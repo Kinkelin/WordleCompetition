@@ -9,33 +9,6 @@ class LetterInformation(Enum):
     CORRECT = auto()  # green in the game
 
 
-def is_hard_mode(word, revealed, letters):
-    """
-    Returns True if the word is a legal guess in hard mode.
-
-    Parameters
-    ----------
-    word : str
-        A 5 letter word in lowercase
-
-    revealed : str
-            Contains the already revealed letters of the wordle. Unknown letters are replaced by '_' characters.
-            Example: s____t (worlde is 'secret')
-
-    letters : a dictionary holding letter:LetterInformation pairs
-        Holds a LetterInformation enum value for each letter of the alphabet
-    """
-    for i in range(len(revealed)):
-        if revealed[i] != '_' and revealed[i] != word[i]:
-            return False
-
-    for letter in letters:
-        if letters[letter] == LetterInformation.PRESENT and letter not in word:
-            return False
-
-    return True
-
-
 class WordleAI(ABC):
 
     def __init__(self, words):
@@ -69,3 +42,30 @@ class WordleAI(ABC):
             If True, the guess has to contain all present letters and known letters also in the right position
         """
         pass
+
+
+def is_hard_mode(word, revealed, letters):
+    """
+    Returns True if the word is a legal guess in hard mode.
+
+    Parameters
+    ----------
+    word : str
+        A 5 letter word in lowercase
+
+    revealed : str
+            Contains the already revealed letters of the wordle. Unknown letters are replaced by '_' characters.
+            Example: s____t (worlde is 'secret')
+
+    letters : a dictionary holding letter:LetterInformation pairs
+        Holds a LetterInformation enum value for each letter of the alphabet
+    """
+    for i in range(len(revealed)):
+        if revealed[i] != '_' and revealed[i] != word[i]:
+            return False
+
+    for letter in letters:
+        if letters[letter] == LetterInformation.PRESENT and letter not in word:
+            return False
+
+    return True
