@@ -55,7 +55,7 @@ The word list of the official wordle game consists of 12972 words: [combined_wor
 Around 2500 of them are used as the daily wordles: [shuffled_real_wordles.txt](data/official/shuffled_real_wordles.txt).
 
 # WordleJudge.py
-Analysis has shown the daily wordles are significantly more frequently used words than the average allowed guess word. 
+Analysis has shown that the daily wordles are significantly more frequently used words than the average allowed-guess word. 
 This is something human players automatically adjust for - they are more likely to guess 'water' than 'pekoe' (a specific tea). 
 
 The WordleJudge class takes into account how common words are in the English language. 
