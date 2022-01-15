@@ -50,9 +50,11 @@ ask for help or boast about your AI's playing strength!
 Executing this file allows playing the game in the browser with AI support. Simply relay the ingame information
 to the AI via console input.
 
-# Official wordle word list
+# Word lists
 The word list of the official wordle game consists of 12972 words: [combined_wordlist.txt](data/official/combined_wordlist.txt)<br>
-Around 2500 of them are used as the daily wordles: [shuffled_real_wordles.txt](data/official/shuffled_real_wordles.txt).
+Around 2500 of them are used as the daily wordles: [shuffled_real_wordles.txt](data/official/shuffled_real_wordles.txt)<br>
+
+In this repository is also a list of 5-letter English words ordered by usage frequency [common_words.txt](data/other/common_words.txt) that was extracted from a [wictionary.org](https://en.wiktionary.org/wiki/Wiktionary:Frequency_lists/PG/2005/08/1-10000) list of 100k common words.
 
 # WordleJudge.py
 Analysis has shown that the daily wordles are significantly more frequently used words than the average allowed-guess word. 
@@ -66,13 +68,3 @@ Use an instance of this class and call `is_wordle_probability(word)` to factor w
 This is an optional setting in the official game.
 - Standard rules apply
 - Guesses must follow already known information. Revealed letters have to be part of the guess, if possible at the right position.
-
-
-# Unofficial word lists
-In the data folder a few unofficial word lists can be found:
-- from https://gist.github.com/h3xx/1976236: List of 100k English words ordered by usage frequency
-- from https://github.com/dwyl/english-words: List of > 450k English words ordered alphabetically
-- from http://mieliestronk.com/corncob-lowercase.txt: List of > 58k English words ordered alphabetically
-- from https://github.com/first20hours/google-10000-english: Lists of 10k common English words ordered by usage frequency
-- from ef.com: Top 3000 and 1000 most common English words, alphabetically sorted
-- A list of 750 words of Basic English from https://en.wikipedia.org/wiki/Basic_English

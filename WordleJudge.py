@@ -6,7 +6,8 @@ class WordleJudge:
     Helper class to take into account how common words are in the English language.
     """
 
-    def __init__(self, words=WordList("data/official/combined_wordlist.txt").words, common_words=WordList("data/other/github_h3xx_wiki-100k.txt").words):
+    def __init__(self, words=WordList("data/official/combined_wordlist.txt").words,
+                 common_words=WordList("data/other/common_words.txt").words):
         self.common_words = common_words
         self.probability = {}
         for word in words:
