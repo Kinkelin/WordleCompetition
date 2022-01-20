@@ -1,3 +1,4 @@
+# The list of allowed guesses of the official wordle game that will never become wordles themselves
 aahed
 aalii
 aargh

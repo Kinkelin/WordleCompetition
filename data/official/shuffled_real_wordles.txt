@@ -1,3 +1,4 @@
+# The list of all 2315 words that will become the official wordle at some point, shuffled to prevent spoilers
 scowl
 wager
 tying

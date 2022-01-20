@@ -57,7 +57,7 @@ Around 2500 of them are used as the daily wordles: [shuffled_real_wordles.txt](d
 
 In this repository is also a list of 5-letter English words ordered by usage frequency [common_words.txt](data/other/common_words.txt) that was extracted from a [wictionary.org](https://en.wiktionary.org/wiki/Wiktionary:Frequency_lists/PG/2005/08/1-10000) list of 100k common words.
 
-Also a list with words that are difficult for AIs to solve can be found under [difficult_words.txt](data/da_finnci/difficult_words.txt) for testing purposes.
+Also a list with words that are difficult for AIs to solve can be found under [difficult_words.txt](data/other/difficult_words.txt) for testing purposes.
 
 # WordleJudge.py
 Analysis has shown that the daily wordles are significantly more frequently used words than the average allowed-guess word. 

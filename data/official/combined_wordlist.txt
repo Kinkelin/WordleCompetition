@@ -1,3 +1,4 @@
+# The full list of the 12972 words recognized by the official wordle game
 noles
 melas
 waist

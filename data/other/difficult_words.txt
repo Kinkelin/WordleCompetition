@@ -1,3 +1,4 @@
+# A collection of words that proved especially difficult to solve for AI implementations
 dilly
 biddy
 roger
