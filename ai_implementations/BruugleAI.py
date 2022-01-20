@@ -18,7 +18,7 @@ class BruugleAI(WordleAI):
         self.corpus = words
         self.judge = WordleJudge()
     
-    def guess(self, revealed, letters, guess_history, attempts, hard_mode):
+    def guess(self, guess_history):
         guess_number = len(guess_history)
         if  guess_number < 5:
             next_guess = self.magic_words[guess_number]
@@ -40,6 +40,9 @@ class BruugleAI(WordleAI):
             best_score = max(word_evaluations)
             next_guess = word_pool[word_evaluations.index(best_score)]
         return next_guess
+
+    def get_author(self):
+        return "Bruugle"
 
 
 def include(word_list, values):

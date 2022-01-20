@@ -1,13 +1,16 @@
 import inspect
 import os
-import string
 import random
 import importlib
+import time
 
+import pytablewriter
 import numpy as np
+from pytablewriter.style import Style
 
 from WordList import *
 from WordleAI import *
+from ai_implementations import LetterPopularityAI
 
 
 class Competition:
@@ -18,12 +21,6 @@ class Competition:
         self.words = self.wordlist.get_list_copy()
         self.competitors = self.load_competitors()
         self.hard_mode = hard_mode
-
-    def create_letter_dictionary(self):
-        dictionary = {}
-        for letter in string.ascii_lowercase:
-            dictionary[letter] = LetterInformation.UNKOWN
-        return dictionary
 
     def load_competitors(self):
         competitors = []
@@ -36,59 +33,41 @@ class Competition:
 
         return competitors
 
-    def replace_char(self, original_string, char_index, new_char):
-        new_string = ""
-        for i in range(len(original_string)):
-            new_string += new_char if i == char_index else original_string[i]
-        return new_string
-
-    def guess_is_legal(self, guess, revealed, letters):
+    def guess_is_legal(self, guess, guess_history):
         return len(guess) == 5 and guess.lower() == guess and guess in self.words and (
-                not self.hard_mode or is_hard_mode(guess, revealed, letters))
+                not self.hard_mode or is_hard_mode(guess, guess_history))
 
     def play(self, competitor, word):
-        revealed = "_____"
-        letters = self.create_letter_dictionary()
         guesses = []
         success = False
         guess_history = []
 
         for i in range(6):  # Up to 6 guesses
-            guess = competitor.guess(revealed, letters, guess_history, i, self.hard_mode)
-
-            if not self.guess_is_legal(guess, revealed, letters):
+            guess = competitor.guess(guess_history)
+            if not self.guess_is_legal(guess, guess_history):
                 print("Competitor ", competitor.__class__.__name__, " is a dirty cheater!")
-                print("hard_mode: ", self.hard_mode, "guess: ", guess, "revealed: ", revealed, "letters: ", letters)
+                print("hard_mode: ", self.hard_mode, "guess: ", guess, "guess_history", guess_history)
                 print("Competition aborted.")
                 quit()
 
             guess_result = []
             for c in range(5):
                 if guess[c] not in word:
-                    letters[guess[c]] = LetterInformation.NOT_PRESENT
                     guess_result.append(LetterInformation.NOT_PRESENT)
                 elif word[c] == guess[c]:
-                    revealed = self.replace_char(revealed, c, guess[c])
-                    letters[guess[c]] = LetterInformation.CORRECT
                     guess_result.append(LetterInformation.CORRECT)
-                elif letters[guess[c]] != LetterInformation.CORRECT:
-                    letters[guess[c]] = LetterInformation.PRESENT
-                    guess_result.append(LetterInformation.PRESENT)
                 else:
                     guess_result.append(LetterInformation.PRESENT)
-            if len(guess_result) != 5:
-                print(guess_result)
             guess_history.append((guess, guess_result))
             guesses.append(guess)
 
             if guess == word:
                 success = True
                 break
-
         return success, guesses
 
     def fight(self, rounds, print_details=False, solution_wordlist_filename='data/official/combined_wordlist.txt',
-              shuffle=True):
+              shuffle=False):
         print("Start tournament")
         result = {}
         success_total = {}
@@ -101,14 +80,18 @@ class Competition:
             success_total[competitor] = 0
             guesses[competitor] = []
             points[competitor] = []
-
         fight_words = WordList(solution_wordlist_filename).get_list_copy()
-
+        start = time.time()
+        competitor_times = np.zeros(len(self.competitors))
         for r in range(rounds):
             word = random.choice(fight_words) if shuffle else fight_words[r]
-            print("\rRound ", r+1,"/",rounds, " word = ", word, end = '')
+            current_time = time.time() - start
             round_words.append(word)
+            c = 0
             for competitor in self.competitors:
+                print("\rRound", r + 1, "/", rounds, "word =", word, "competitior", c + 1, "/", len(self.competitors),
+                      "time", current_time, "/", current_time * rounds / (r + 1), end='')
+                competitor_start = time.time()
                 success, round_guesses = self.play(competitor, word)
                 round_points = len(round_guesses) if success else 10
                 result[competitor] += round_points
@@ -116,6 +99,12 @@ class Competition:
                 points[competitor].append(round_points)
                 if success:
                     success_total[competitor] += 1
+                competitor_times[c] += time.time() - competitor_start
+                c += 1
+
+        print("\n")
+        for i in range(len(competitor_times)):
+            print(self.competitors[i].__class__.__name__, "calculation took", "{:.3f}".format(competitor_times[i]), "seconds")
 
         print("")
         if print_details:
@@ -124,14 +113,30 @@ class Competition:
             print("Points per round: ", points)
             print("")
 
-        print("Competition finished with ", rounds, " rounds, ", len(self.competitors), " competitors and hard_mode = ",
-              self.hard_mode)
+        print("Competition finished with ", rounds, " rounds, ", len(self.competitors), " competitors and hard_mode = ", self.hard_mode,"\n")
         result = dict(sorted(result.items(), key=lambda item: item[1]))
+
+        writer = pytablewriter.MarkdownTableWriter()
+        writer.table_name = "Leaderboard"
+        writer.headers = ["Nr", "AI", "Author", "Points per round", "Success rate"]
+        for i in range(len(writer.headers)):
+            writer.set_style(column=i, style=Style(align="left"))
+        writer.value_matrix = []
+
         placement = 1
         for competitor in result:
-            print(competitor.__class__.__name__, " placed ", placement, " with a score of ", result[competitor],
-                  " and points per round: ", result[competitor] / rounds, " and a success rate of ", "{:.2f}".format(100 * success_total[competitor] / rounds), "%")
+            writer.value_matrix.append(
+                [placement, competitor.__class__.__name__, competitor.get_author(), result[competitor] / rounds,
+                 str(100 * success_total[competitor] / rounds) + "%"])
             placement += 1
+        writer.write_table()
+
+
+def is_hard_mode(word, guess_history):
+    """
+    Returns True if the word is a legal guess in hard mode.
+    """
+    return len(LetterPopularityAI.remaining_options([word], guess_history)) == 1
 
 
 def main():
@@ -139,8 +144,7 @@ def main():
     np.set_printoptions(suppress=True)
 
     competition = Competition("ai_implementations", wordlist_filename="data/official/combined_wordlist.txt", hard_mode=False)
-    competition.fight(rounds=1000, solution_wordlist_filename="data/official/shuffled_real_wordles.txt", print_details=False, shuffle=False)
-
+    competition.fight(rounds=1000, solution_wordlist_filename="data/official/shuffled_real_wordles.txt", print_details=False)
 
 if __name__ == "__main__":
     main()

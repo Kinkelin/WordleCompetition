@@ -2,12 +2,12 @@
 In this repository you can find everything you need to hold [Wordle](https://www.powerlanguage.co.uk/wordle/) AI competitions. Implement and test your own AIs to find the optimal wordle strategy!
 
 # Leaderboard
-
-| Nr | AI                 | Author    | Points per round | Success rate |
-|----|--------------------|-----------|------------------|--------------|
-| 1  | LetterPopularityAI | da Finnci | 4.911            | 91.4%        |
-| 2  | BruugleAI          | Bruugle   | 6.120            | 97.0%        |
-| 3  | MonkeyAI           | da Finnci | 9.995            | 0.1%         |
+|Nr |        AI        | Author  |Points per round|Success rate|
+|---|------------------|---------|----------------|------------|
+|1  |OutcomeBasedAI    |da Finnci|3.816           |100.0%      |
+|2  |LetterPopularityAI|example  |4.653           |93.6%       |
+|3  |BruugleAI         |Bruugle  |6.120           |97.0%       |
+|4  |MonkeyAI          |example  |10.000          |0.0%        |
 
 The leaderboard shows how AIs contained in this repository perform against offical wordles, 
 using the first 1000 words found [here](data/official/shuffled_real_wordles.txt). 
@@ -56,6 +56,8 @@ The word list of the official wordle game consists of 12972 words: [combined_wor
 Around 2500 of them are used as the daily wordles: [shuffled_real_wordles.txt](data/official/shuffled_real_wordles.txt)<br>
 
 In this repository is also a list of 5-letter English words ordered by usage frequency [common_words.txt](data/other/common_words.txt) that was extracted from a [wictionary.org](https://en.wiktionary.org/wiki/Wiktionary:Frequency_lists/PG/2005/08/1-10000) list of 100k common words.
+
+Also a list with words that are difficult for AIs to solve can be found under [difficult_words.txt](data/da_finnci/difficult_words.txt) for testing purposes.
 
 # WordleJudge.py
 Analysis has shown that the daily wordles are significantly more frequently used words than the average allowed-guess word. 

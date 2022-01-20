@@ -35,7 +35,7 @@ guesses = [] # pass already done guesses in this list. It will overwrite the fir
 attempts = 0
 guess_history = []
 while attempts < 6:
-    guess = ai.guess(None, None, guess_history, attempts, False)
+    guess = ai.guess(guess_history)
     if attempts < len(guesses):
         guess = guesses[attempts]
     print("AI guesses ", guess)

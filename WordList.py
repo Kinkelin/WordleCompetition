@@ -12,7 +12,9 @@ class WordList:
         with open(filename, encoding="utf8") as file:
             self.words = file.readlines()
             self.words = [word.rstrip() for word in self.words]
-            self.words = list(filter(lambda w: len(w) == 5 and self.is_ascii_lowercase(w), self.words))
+            self.words = [w for w in self.words if len(w) == 5 and self.is_ascii_lowercase(w)]
+            self.words = list(dict.fromkeys(self.words))  # remove duplicates
+
 
     def get_list_copy(self):
         return self.words.copy()
