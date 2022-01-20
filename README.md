@@ -5,9 +5,10 @@ In this repository you can find everything you need to hold [Wordle](https://www
 |Nr |        AI        | Author  |Points per round|Success rate|
 |---|------------------|---------|----------------|------------|
 |1  |OutcomeBasedAI    |da Finnci|3.816           |100.0%      |
-|2  |LetterPopularityAI|example  |4.653           |93.6%       |
-|3  |BruugleAI         |Bruugle  |6.120           |97.0%       |
-|4  |MonkeyAI          |example  |10.000          |0.0%        |
+|2  |RubzipAI          |rubzip  |4.583           |96.9%       |
+|3  |LetterPopularityAI|example  |4.653           |93.6%       |
+|4  |BruugleAI         |Bruugle  |6.120           |97.0%       |
+|5  |MonkeyAI          |example  |9.986           |0.2%        |
 
 The leaderboard shows how AIs contained in this repository perform against offical wordles, 
 using the first 1000 words found [here](data/official/shuffled_real_wordles.txt). 

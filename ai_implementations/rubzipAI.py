@@ -1,11 +1,16 @@
 import string
 
 import math as m
+
+import numpy as np
+
 from WordleAI import WordleAI, LetterInformation
 
 class RubzipAI(WordleAI):
 
-    def guess(self, revealed, letters, guess_history, attempts, hard_mode):
+    def guess(self, guess_history):
+        revealed = get_revealed(guess_history)
+        attempts = len(guess_history)
         known_letters = calculate_known_letters(revealed) # What letters we know where excatly there are
         options = remaining_options(self.words, guess_history)  # take known information into account
         if(len(options)==1):
@@ -25,6 +30,9 @@ class RubzipAI(WordleAI):
                     best_option = option  # store the best option found
                     highest_popularity = popularity
         return best_option
+
+    def get_author(self):
+        return "rubzip"
 
 
 def calculate_letter_entropy(words, known_letters):#EDITED BY ME
@@ -77,4 +85,12 @@ def calculate_known_letters(revealed):#EDITED BY ME
 
     return known_letters
 
+
+def get_revealed(guess_history):
+    revealed = np.full(5,'_')
+    for entry in guess_history:
+        for i in range(5):
+            if entry[1][i] == LetterInformation.CORRECT:
+                revealed[i] = entry[0][i]
+    return "".join(revealed)
 
