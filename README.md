@@ -6,7 +6,8 @@ In this repository you can find everything you need to hold [Wordle](https://www
 | Nr | AI                 | Author    | Points per round | Success rate |
 |----|--------------------|-----------|------------------|--------------|
 | 1  | LetterPopularityAI | da Finnci | 4.911            | 91.4%        |
-| 2  | MonkeyAI           | da Finnci | 9.995            | 0.1%         |
+| 2  | BruugleAI          | Bruugle   | 6.120            | 97.0%        |
+| 3  | MonkeyAI           | da Finnci | 9.995            | 0.1%         |
 
 The leaderboard shows how AIs contained in this repository perform against offical wordles, 
 using the first 1000 words found [here](data/official/shuffled_real_wordles.txt). 
@@ -14,7 +15,7 @@ using the first 1000 words found [here](data/official/shuffled_real_wordles.txt)
 You can submit your own implementation by creating a pull request or sending it to me directly. 
 The leaderboard will be updated accordingly.
 
-AIs should use the word list provided in the constructor call and must not use the official wordle list directly. 
+AIs should use the word list [provided](data/official/combined_wordlist.txt) in the constructor call and must not use the [solution](data/official/shuffled_real_wordles.txt) list directly. 
 It is allowed (and encouraged) to use a common words list to mimic inherint human knowledge. 
 See [WordleJudge](#wordlejudgepy) for details. 
 
