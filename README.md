@@ -35,7 +35,7 @@ Hard mode is not enforced.
 - You can pass `True` for the `print_details` argument in the `Competition.fight()` calls in the main method if you want to see guesses and scoring by round.
 
 # Community
-Feel free to hop onto our [Discord](https://discord.gg/BxVpFXne) to discuss strategy, 
+Feel free to hop onto our [Discord](https://discord.gg/haz6uDsxt6) to discuss strategy, 
 ask for help or boast about your AI's playing strength!
 
 # Wordle rules
