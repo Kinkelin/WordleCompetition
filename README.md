@@ -2,14 +2,14 @@
 In this repository you can find everything you need to hold [Wordle](https://www.powerlanguage.co.uk/wordle/) AI competitions. Implement and test your own AIs to find the optimal wordle strategy!
 
 # Leaderboard
-|Nr |        AI        |  Author  |Points per round|Success rate|
-|---|------------------|----------|----------------|------------|
-|1  |OutcomeBasedAI    |da Finnci |3.816           |100.0%      |
-|2  |EntropyAI         |Akshaylive|4.288           |99.7%       |
-|3  |RubzipAI          |rubzip    |4.582           |97.0%       |
-|4  |LetterPopularityAI|example   |4.653           |93.6%       |
-|5  |BruugleAI         |Bruugle   |6.120           |97.0%       |
-|6  |MonkeyAI          |example   |9.986           |0.2%        |
+|Nr |          AI          |  Author  |Points per round|Success rate|
+|---|----------------------|----------|----------------|------------|
+|1  |OutcomeBasedAI        |da Finnci |3.816           |100.0%      |
+|2  |EntropyAI             |Akshaylive|4.091           |100.0%      |
+|3  |RubzipAI              |rubzip    |4.569           |97.2%       |
+|4  |LetterPopularityAI    |example   |4.653           |93.6%       |
+|5  |BruugleAI             |Bruugle   |6.120           |97.0%       |
+|6  |MonkeyAI              |example   |10.000          |0.0%        |
  
 The leaderboard shows how AIs contained in this repository perform against offical wordles, 
 using the first 1000 words found [here](data/official/shuffled_real_wordles.txt). 
