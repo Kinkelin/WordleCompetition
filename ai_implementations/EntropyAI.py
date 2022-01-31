@@ -1,8 +1,15 @@
+import itertools
 import math
 
 from WordleAI import WordleAI, LetterInformation
+from WordleJudge import WordleJudge
 
 class EntropyAI(WordleAI):
+    def __init__(self, words):
+        super().__init__(words)
+        self.judge = WordleJudge(words)
+        self.cache = {}
+
     def guess(self, guess_history):
         candidates = self.words
         for (guess, outcome) in guess_history:
@@ -13,7 +20,7 @@ class EntropyAI(WordleAI):
                     candidates = [x for x in candidates if x[i] != guess[i] and guess[i] in x]
                 else:
                     candidates = [x for x in candidates if guess[i] not in x]
-        return self.get_candidate(candidates, self.words)
+        return self.cached_get_candidate(candidates, self.words, guess_history)
 
     def get_author(self):
         return "Akshaylive"
@@ -71,12 +78,26 @@ class EntropyAI(WordleAI):
             entropy -= self.safe_entropy(r[ch])
         return entropy
 
+    def cached_get_candidate(self, words, all_words, guess_history):
+        key = tuple(itertools.chain(*[[x[0]]+x[1] for x in guess_history]))
+        if key in self.cache:
+            return self.cache[key]
+        value = self.get_candidate(words, all_words)
+        if len(guess_history) < 2:
+            self.cache[key] = value
+        return value
+
     def get_candidate(self, words, all_words):
         m = 0
         best = words[0]
         p, q, r = self.get_probability_distributions(words)
+
+        # Once the number of words become small enough, restrict search to that.
+        if len(words) <= 2:
+            all_words = words
+
         for word in all_words:
-            s = self.get_score(word, p, q, r)
+            s = self.get_score(word, p, q, r) + self.judge.is_wordle_probability(word)
             if s > m:
                 m = s
                 best = word
