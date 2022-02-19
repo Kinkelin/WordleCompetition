@@ -1,3 +1,4 @@
+from collections import defaultdict, Counter
 import inspect
 import os
 import random
@@ -50,14 +51,34 @@ class Competition:
                 print("Competition aborted.")
                 quit()
 
-            guess_result = []
+            guess_result_dict = defaultdict(lambda: None)
+            counted = dict(Counter(word))
+
+            # first time around we check for well-placed letters
+            # as it's "free", we also check for letters that are not present
             for c in range(5):
                 if guess[c] not in word:
-                    guess_result.append(LetterInformation.NOT_PRESENT)
+                    guess_result_dict[c] = LetterInformation.NOT_PRESENT
                 elif word[c] == guess[c]:
-                    guess_result.append(LetterInformation.CORRECT)
+                    guess_result_dict[c] = LetterInformation.CORRECT
+                    # signal this letter has already be used once
+                    counted[guess[c]] -= 1
+            # second time around, we check for letter that ar present but misplaced
+            # since we already checked well-placed letter, a letter that is present twice in the
+            # guess will be accounted correctly
+            for c in range(5):
+                if guess_result_dict[c] is not None:
+                    continue
+                if counted[guess[c]] > 0:
+                    guess_result_dict[c] = LetterInformation.PRESENT
+                    # let's not forget to update how many of that letter rmain in the original word
+                    counted[guess[c]] -= 1
                 else:
-                    guess_result.append(LetterInformation.PRESENT)
+                    guess_result_dict[c] = LetterInformation.NOT_PRESENT
+
+            # transform guess_result back to a list
+            guess_result = [guess_result_dict[c] for c in range(5)]
+
             guess_history.append((guess, guess_result))
             guesses.append(guess)
 
